@@ -15,7 +15,7 @@ L_2=15
 l0=8.5
 l1=6.2
 l2=8.7
-l3=16.63 # in
+l3=16.63 # cm
 
 # init pos of motors at zero position
 try_a_init = 110 # deg
@@ -133,10 +133,10 @@ def configure_vel_to_gait_func(step_length, step_width, step_height):
 # step_width = [-1, 1]
 # step_height = [0, 2.5]
 
-gait_func = configure_vel_to_gait_func(step_length=[-5, -2],step_width=[-2, 2],step_height=[-10, -8])
+# gait_func = configure_vel_to_gait_func(step_length=[-5, -2],step_width=[-2, 2],step_height=[-10, -8])
 
-for i in [o / 10.0 for o in range(60)]:
-    print(i, gait_func(vel_input=[6, -0.5], period_cycle=i, period_offset=0))
+# for i in [o / 10.0 for o in range(60)]:
+#     print(i, gait_func(vel_input=[6, -0.5], period_cycle=i, period_offset=0))
 
 # time_ratio_on_ground=0.75
 # time_ratio_on_ground: % of leg gait spent on ground. Used to make sure leg is in air as little as possible while maximizing robot stability

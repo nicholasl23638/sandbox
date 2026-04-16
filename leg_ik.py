@@ -54,7 +54,7 @@ def wrap_angle(rad_angle):
     return (rad_angle + math.pi) % (2 * math.pi) - math.pi
 
 def find_tb_tc(x_EE, z_EE, L_1, L_2):
-    if (math.sqrt(x_EE**2 + z_EE**2) > math.sqrt(L_1**2 + L_2**2)):
+    if (math.sqrt(x_EE**2 + z_EE**2) > (L_1 + L_2)):
         print("Leg position unreachable!", x_EE, z_EE)
         return None, None
     t_c = math.acos((x_EE**2 + z_EE**2 - L_1**2 - L_2**2) / (2*L_1*L_2))
@@ -75,7 +75,7 @@ def convert_tb_tc_to_ta_tl(t_b, t_c, l0, l1, l2, l3): # NOTE: l0-->l3 = 4-bar li
     t_l = math.degrees(t_3 + t_c) + 180
     return t_a, t_l
 
-def calculate_leg_ik(target_pos : np.array, L_0=3.5, L_1=20.7, L_2=15, l0=8.5, l1=6.2, l2=8.7, l3=16.63):
+def calculate_leg_ik(target_pos, L_0=3.5, L_1=20.7, L_2=15, l0=8.5, l1=6.2, l2=8.7, l3=16.63):
     """ 
     Given desired position of leg EE and lengths of leg, output angles of leg
     note: this does NOT consider configuration of leg 
@@ -106,10 +106,14 @@ def calculate_leg_ik(target_pos : np.array, L_0=3.5, L_1=20.7, L_2=15, l0=8.5, l
         return None, None, None
     
     t_a, t_l = convert_tb_tc_to_ta_tl(t_b, t_c, l0, l1, l2, l3)
+    
     if t_a is None or t_l is None:
         print("Linkage invalid! - IK not solved")
         return None, None, None
 
+    if t_l > 720:
+        t_l = t_l - 360
+    
     return t_h, t_a, t_l
 
 

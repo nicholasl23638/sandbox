@@ -3,7 +3,7 @@ import math
 import gait_utils
 import leg_ik
 
-def catbot_crawl(vel, cycle_period, turning=False, generated_leg_gait_func=gait_utils.configure_vel_to_gait_func(step_length=[-5, -2],step_width=[-2, 2],step_height=[-10, -8])):
+def catbot_crawl(vel, cycle_period, turning=False, generated_leg_gait_func=gait_utils.configure_vel_to_gait_func(step_length=[-5, -1],step_width=[-1, 1],step_height=[-25, -12])):
     """
     inputs:
         vel: [x, y] vector
@@ -15,14 +15,15 @@ def catbot_crawl(vel, cycle_period, turning=False, generated_leg_gait_func=gait_
     ret = []
 
     leg_names = ["FL_leg", "FR_leg", "BL_leg", "BR_leg"]
-    cycle_offset_crawl = [0, math.pi/2, math.pi, 3*math.pi/2] # time offset per leg to make legs out of sync with one another, thus enabling crawl
+    #cycle_offset_crawl = [0, math.pi/2, math.pi, 3*math.pi/2] # time offset per leg to make legs out of sync with one another, thus enabling crawl
+    cycle_offset_crawl = [0, math.pi, math.pi, 0] # 
+    #cycle_offset_crawl = [0, math.pi, math.pi, 0] # 
     hip_offset = 3.5
 
     if turning:
-        # TODO: test that this is properly mapping to right legs
         turn_vel = [
-            [-vel[0], vel[1]],
-            [vel[0], vel[1]],
+            [-vel[0], -vel[1]],
+            [vel[0], -vel[1]],
             [-vel[0], -vel[1]],
             [vel[0], -vel[1]]
             ]
@@ -37,8 +38,13 @@ def catbot_crawl(vel, cycle_period, turning=False, generated_leg_gait_func=gait_
         else:
             x_pos, y_pos, z_pos = generated_leg_gait_func(turn_vel[i], cycle_period, cycle_offset_crawl[i])
 
-        print("pose before offsets:", x_pos, y_pos, z_pos)
+        if i ==0:
+            print("FL_leg: ", x_pos, y_pos, z_pos)
+        # print("pose before offsets:", x_pos, y_pos, z_pos)
         # get leg angles given target pos with leg offsets
+        
+        # if i > 1:
+        #     x_pos = x_pos # TODO TWEAK OR REMOVE. This is to account for CG, and 0 position of x being at t_a
         if leg == "FL_leg" or leg == "BL_leg":
             hip_deg, t_a_deg, t_l_deg = leg_ik.calculate_leg_ik([x_pos, y_pos + hip_offset, z_pos], L_0=hip_offset)
         else:
@@ -49,8 +55,8 @@ def catbot_crawl(vel, cycle_period, turning=False, generated_leg_gait_func=gait_
     return ret
         
 
-jeff = gait_utils.GhostMotor(1)
-test_legs = {"FL_leg": [jeff, jeff, jeff], "FR_leg": [jeff, jeff, jeff], "BL_leg": [jeff, jeff, jeff], "BR_leg": [jeff, jeff, jeff]}
+# jeff = gait_utils.GhostMotor(1)
+# test_legs = {"FL_leg": [jeff, jeff, jeff], "FR_leg": [jeff, jeff, jeff], "BL_leg": [jeff, jeff, jeff], "BR_leg": [jeff, jeff, jeff]}
 
-print(catbot_crawl([1, 0.5], 4))
+# print(catbot_crawl([1, 0.5], 4))
 
