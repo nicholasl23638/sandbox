@@ -1,0 +1,14 @@
+{
+    "configuration": "default",
+    "documentId": "012a72eca5d2267cc5864cb6",
+    "documentMicroversion": "4b81b26ac53f44207295c0cb",
+    "documentVersion": "3764266edbd461fd2684bed8",
+    "elementId": "20ec89fada942e2fdc61880d",
+    "fullConfiguration": "default",
+    "id": "MgbeAVfHTOR6ZS8lq",
+    "isStandardContent": false,
+    "name": "Motor Controller holder <2>",
+    "partId": "RLBD",
+    "suppressed": false,
+    "type": "Part"
+}
